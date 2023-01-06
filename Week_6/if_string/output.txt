@@ -1,0 +1,14 @@
+integer = 100;
+switch(integer){
+   case 101: 
+        i+=1;
+        i*=10;
+	break;
+   case 201: 
+        i+=5;
+	break;
+   default: 
+        i+=2;
+        i/=2;
+	break;
+}

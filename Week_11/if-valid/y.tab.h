@@ -1,0 +1,11 @@
+#define FOR 257
+#define RELOP 258
+#define NUM 259
+#define ID 260
+#define NL 261
+#define EQ 262
+#define OP 263
+#define INC 264
+#define KEY 265
+#define SEM 266
+#define S 267

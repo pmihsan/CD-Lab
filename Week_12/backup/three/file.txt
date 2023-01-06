@@ -1,0 +1,21 @@
+S: K '=' K '+' K { printf("\nt%d = t%d + t%d\n", $<dval>1-'A', $<dval>3-'A', $<dval>5-'A'); }
+ | K '+' K {p++; printf("\nt%d = t%d + t%d\n", p - 'A',$<dval>1-'A', $<dval>3-'A'); }
+ | K '=' K { printf("\nt%d = t%d\n", $<dval>1-'A', $<dval>3-'A'); } ;
+K: E { $<dval>$ = $<dval>1; }
+ | ID '[' F ']' { p++; printf("\nt%d = 3 * t%d\n", p-'A', $<dval>3-'A'); t=p++; printf("\nt%d = %c[t%d]\n", p-'A', $<dval>1, t-'A'); $<dval>$ = p;}
+  | ID {p++;  printf("\nt%d = %c", p-'A', $<dval>1); $<dval>$ = p;}
+ ;
+F: E { $<dval>$ = p;}
+  | F ']' '[' E { p++; printf("\nt%d = t%d * 24", p-'A', $<dval>1-'A', $<dval>1); t=p++; printf("\nt%d = t%d + t%d", p-'A', $<dval>4-'A', t-'A'); $<dval>$ = p;}
+;
+E: NUM {p++; printf("\nt%d = %d", p-'A', $<dval>1); $<dval>$ = p;}
+  | ID {p++;  printf("\nt%d = %c", p-'A', $<dval>1); $<dval>$ = p;}
+ | E '+' E {p++; printf("\nt%d = t%d + t%d", p-'A', $<dval>1-'A', $<dval>3-'A'); $<dval>$ = p;}
+ | E '-' E {p++; printf("\nt%d = t%d - t%d", p-'A', $<dval>1-'A', $<dval>3-'A'); $<dval>$ = p;}
+ | E '*' E {p++; printf("\nt%d = t%d * t%d", p-'A', $<dval>1-'A', $<dval>3-'A'); $<dval>$ = p;}
+ | E '/' E {p++; printf("\nt%d = t%d / t%d", p-'A', $<dval>1-'A', $<dval>3-'A'); $<dval>$ = p;}
+ | '(' E ')' { $<dval>$ = p; }
+ | '-' E %prec UMINUS {p++; printf("\nt%d = -%c", p-'A', $<dval>2); $<dval>$ = p;}
+ ;
+%%
+

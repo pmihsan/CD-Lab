@@ -1,0 +1,10 @@
+#define IF 257
+#define ELSE 258
+#define RELOP 259
+#define NUM 260
+#define ID 261
+#define NL 262
+#define EQ 263
+#define OP 264
+#define BOP 265
+#define SEM 266

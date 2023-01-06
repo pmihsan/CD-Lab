@@ -1,0 +1,31 @@
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include "y.tab.h"
+extern int yylval;
+%}
+
+alpha [A-Za-z]
+digit [0-9]
+
+%%
+[ \t] ;
+"if" return IF;
+";" return SEM;
+{digit}+ { yylval = atoi(yytext); return NUM; }
+{alpha}({alpha}|{digit})*|{alpha}+ return ID;
+"<=" return LTE;
+">=" return GTE;
+"<" return LT;
+">" return GT;
+"!=" return NEQ;
+"=" return EQ;
+"==" return DEQ;
+"+"|"-" return OP;
+"&&" return BAND;
+"||" return BOR;
+"!" return BNOT;
+"\n" return NL;
+. return(yytext[0]);
+
+%%

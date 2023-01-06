@@ -1,0 +1,3 @@
+String: (b || c && d || a && q) || e
+String: ( a && b ) || c
+String: (a && c) || d

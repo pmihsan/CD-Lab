@@ -1,0 +1,5 @@
+i = 10;
+do{
+	i += 2;
+	printf("hi");
+}while(i < 50);

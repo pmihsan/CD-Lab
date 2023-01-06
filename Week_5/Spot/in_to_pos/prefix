@@ -1,0 +1,129 @@
+%{                                                                                                                      
+#include <stdbool.h>  
+#include<stdio.h>  
+#include<string.h>                                                                                                
+typedef struct node {                                                                                                   
+        int val;                                                                                                        
+        struct node *next;                                                                                              
+}node_t;                                                                                                                
+char ans[100];
+int j = 0;                                                                                                         
+int pop();                                                                                                              
+void push(int val);                                                                                                     
+int priority (int op);                                                                                                  
+int peek();                                                                                                             
+bool isEmpty();                                                                                                         
+                                                                                                                        
+%}                                                                                                                      
+                                                                                                                        
+op [+/*-]                                                                                                               
+                                                                                                                        
+%%                                                                                                                      
+                                                                                                                        
+[a-zA-Z] { 
+        //printf("%s", yytext); 
+        strcat(ans,yytext);
+        j += yyleng; 
+        }                                                                                      
+"(" {push(yytext[0]);}                                                                                                  
+{op} {                                                                                                                  
+        while ( priority(peek()) > priority(yytext[0])){     
+                //printf("%c",pop());    
+                ans[j++] = pop();
+        }                                                                                                               
+        push(yytext[0]);                                                                                                
+}                                                                                                                       
+")" {                                                                                                                   
+        while ( peek() != '(') {                                                                                        
+                //printf("%c",pop());    
+                ans[j++] = pop();       
+        }                                                                                                               
+        pop();                                                                                                          
+}                                                                                                                       
+\n {                                                                                                                    
+        while (!isEmpty()){                                                                                             
+                //printf("%c",pop());    
+                ans[j++] = pop();        
+        } 
+        ans[j] = '\0';                                                                                                 
+}                                                                                                                       
+exit { return 0; }                                                                                                      
+. { }                                                                                                                   
+                                                                                                                        
+%%                                                                                                                      
+                                                                                                                        
+node_t *stack_head = NULL;                                                                                              
+                                                                                                                        
+int priority (int op) {                                                                                                 
+        switch (op) {                                                                                                   
+                case '+':                                                                                               
+                case '-':                                                                                               
+                        return 1;                                                                                       
+                case '*':                                                                                               
+                case '/':                                                                                               
+                        return 2;                                                                                       
+        }                                                                                                               
+        return -1;                                                                                                      
+}                                                                                                                       
+                                                                                                                        
+int peek() {                                                                                                            
+        if (stack_head == NULL) return -1;                                                                              
+        return stack_head->val;                                                                                         
+}                                                                                                                       
+                                                                                                                        
+bool isEmpty() {                                                                                                        
+        if (stack_head == NULL) return true;                                                                            
+        return false;                                                                                                   
+}                                                                                                                       
+                                                                                                                        
+int pop() {                                                                                                             
+        if (stack_head == NULL) return -1;                                                                              
+        int val = stack_head->val;                                                                                      
+        node_t *temp = stack_head;                                                                                      
+        stack_head = stack_head->next;                                                                                  
+        free(temp);                                                                                                     
+        return val;                                                                                                     
+}                                                                                                                       
+                                                                                                                        
+void push (int val) {                                                                                                   
+        node_t *temp = (node_t *) malloc (sizeof(node_t));                                                              
+        temp->val = val;                                                                                                
+        temp->next = stack_head;                                                                                        
+        stack_head = temp;                                                                                              
+}                                                                                                                       
+                                                                                                                        
+int yywrap() {                                                                                                          
+        return 1;                                                                                                       
+}                                                                                                                       
+                                                                                                                        
+void main () { 
+        char exp[100]; 
+        FILE *fp = fopen("file.txt", "r");
+        fgets(exp, 100, fp);
+        int n = strlen(exp); 
+        for(int i=0;i<n/2;i++){
+                char ch = exp[i];
+                exp[i] = exp[n-i-1];
+                exp[n-i-1] = ch;
+        }
+        for(int i=0;i<n;i++){
+                if(exp[i] == '(') exp[i] = ')';
+                else if(exp[i] == ')') exp[i] = '(';
+        }
+        fclose(fp);
+        fp = fopen("file.txt", "w");
+        fprintf(fp, "%s\n",exp);
+        fclose(fp);
+        fp = fopen("file.txt", "r");
+        yyin = fp;
+        
+        
+        yylex(); 
+        FILE *fp2 = fopen("out.txt", "w");
+        for(int i=0;i<strlen(ans)/2;i++){
+                char ch = ans[i];
+                ans[i] = ans[strlen(ans)-i-1];
+                ans[strlen(ans)-i-1] = ch;
+        }
+        fprintf(fp2,"%s\n",ans);   
+}

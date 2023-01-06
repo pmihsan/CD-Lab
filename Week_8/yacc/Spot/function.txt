@@ -1,0 +1,4 @@
+int cube(int a){
+	printf("Cube Function\n");
+	return a * a * a;
+}

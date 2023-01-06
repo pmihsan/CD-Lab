@@ -1,0 +1,12 @@
+#define IDATA 257
+#define FDATA 258
+#define CDATA 259
+#define DATATYPE 260
+#define NAME 261
+#define EQ 262
+#define DATA 263
+#define SEMICOLON 264
+#define IDT 265
+#define FDT 266
+#define CDT 267
+#define COMMA 268

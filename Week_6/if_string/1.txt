@@ -1,0 +1,13 @@
+num = 123;
+if(num == 123){
+        i = i * 10;
+}
+else if(num == 678){
+        i = i * 12;
+}
+else if(num == 789){
+        i = i * 14;
+}
+else{
+        i = i * 15;
+}

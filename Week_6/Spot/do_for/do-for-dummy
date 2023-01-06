@@ -1,0 +1,53 @@
+%option noyywrap
+
+%{
+	#include<stdio.h>
+	int j = 0;
+	char init[20], cond[20],inc[20],buffer[100];
+%}
+
+%%
+"int .*;" {
+	int i = 4;
+	int k = 0;	
+	while(yytext[i] != ';') init[k++] = yytext[i];
+	printf("%s\n",init);	
+}
+"do{\n" {}
+	
+"while.*" {
+	int i = 6;
+	int k = 0;
+	while(yytext[i] != ')') cond[k++] = yytext[i];
+	printf("%s\n",cond);	
+}
+
+".*\n}" {
+	int i = 0;
+	int k = 0;
+	while(yytext[i] != '\n') inc[k++] = yytext[i++]; 
+	printf("%s\n",inc);	
+}
+
+. {
+	buffer[j] = yytext[0];
+	j++;
+}
+
+\n {
+	printf("%s\n",buffer);
+}
+
+%%
+
+int main(int argc, char *argv[]){
+	if(argc > 1){
+		FILE *fp = fopen(argv[1],"r");
+		if(fp) yyin = fp;
+	}
+	FILE *fp2= fopen("output.txt","w");
+	yyout = fp2;
+	yylex();
+//	printf("for(%s;%s;%s){\n%s\n}\n",init,cond,inc,buffer);
+	return 0;
+}
